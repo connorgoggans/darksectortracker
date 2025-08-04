@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dark Sector Health Tracker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <h1>Escape the Dark Sector: Health Tracker</h1>
+    <div id="character-setup" class="card">
+      <label for="charName">Enter Character Name:</label>
+      <input type="text" id="charName" placeholder="e.g., Commander"/>
+      <button onclick="startTracking()">Start</button>
+    </div>
+
+    <div id="tracker" class="hidden card">
+      <h2 id="charDisplay"></h2>
+      <div id="healthBar"></div>
+      <div class="controls">
+        <button onclick="changeHealth(-1)">-1</button>
+        <button onclick="changeHealth(1)">+1</button>
+        <button onclick="changeHealth(-3)">-3</button>
+        <button onclick="changeHealth(3)">+3</button>
+        <button onclick="changeHealth(-6)">-6</button>
+        <button onclick="changeHealth(6)">+6</button>
+        <button onclick="resetHealth()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
