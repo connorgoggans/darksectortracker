@@ -5,6 +5,7 @@ body {
   display: flex;
   justify-content: center;
   padding: 40px;
+  margin: 0;
 }
 
 #app {
@@ -62,9 +63,25 @@ button:hover {
   background-color: #0f0;
 }
 
+/* New styling for responsiveness */
 canvas {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
   background-color: #000;
   border: 1px solid #555;
   display: block;
   margin: 20px auto;
+}
+
+/* Make buttons stack vertically on smaller screens */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.controls button {
+  flex: 1 1 50%;
+  max-width: 100px;
 }

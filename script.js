@@ -1,6 +1,7 @@
 let maxHealth = 12;
 let currentHealth = 12;
-let healthHistory = [currentHealth];
+let healthHistory = [currentHealth]; // to track health over time
+let healthChanges = ['start']; // track change direction (green or red)
 
 function startTracking() {
   const nameInput = document.getElementById("charName").value.trim();
@@ -29,11 +30,17 @@ function renderHealth() {
 }
 
 function changeHealth(amount) {
+  const previousHealth = currentHealth;
   currentHealth += amount;
+
+  // Ensure health is within bounds
   if (currentHealth > maxHealth) currentHealth = maxHealth;
   if (currentHealth < 0) currentHealth = 0;
 
+  // Track the change direction (green for +, red for -)
+  healthChanges.push(amount >= 0 ? 'green' : 'red');
   healthHistory.push(currentHealth);
+  
   renderHealth();
   drawChart();
 }
@@ -41,6 +48,7 @@ function changeHealth(amount) {
 function resetHealth() {
   currentHealth = maxHealth;
   healthHistory = [currentHealth];
+  healthChanges = ['start'];
   renderHealth();
   drawChart();
 }
@@ -49,7 +57,7 @@ function drawChart() {
   const canvas = document.getElementById("healthChart");
   const ctx = canvas.getContext("2d");
 
-  // Clear canvas
+  // Clear canvas before drawing
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   const margin = 20;
@@ -75,29 +83,24 @@ function drawChart() {
   ctx.lineTo(canvas.width - margin, canvas.height - margin);
   ctx.stroke();
 
-  // Plot line
-  if (pointCount > 1) {
-    ctx.strokeStyle = "#0f0";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    const xStep = width / (pointCount - 1);
-    for (let i = 0; i < pointCount; i++) {
-      const x = margin + i * xStep;
-      const y = canvas.height - margin - (points[i] / maxHealth) * height;
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
-    ctx.stroke();
-  }
-
-  // Draw dots
-  for (let i = 0; i < pointCount; i++) {
-    const x = margin + i * (width / (pointCount - 1));
+  // Plot line and fill color based on change direction
+  ctx.lineWidth = 2;
+  let xStep = width / (pointCount - 1);
+  for (let i = 1; i < pointCount; i++) {
+    const prevX = margin + (i - 1) * xStep;
+    const prevY = canvas.height - margin - (points[i - 1] / maxHealth) * height;
+    const x = margin + i * xStep;
     const y = canvas.height - margin - (points[i] / maxHealth) * height;
-    ctx.fillStyle = "#0f0";
+
+    // Set line color based on the health change
+    ctx.strokeStyle = healthChanges[i] === 'green' ? '#0f0' : '#f00';
+    ctx.beginPath();
+    ctx.moveTo(prevX, prevY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    // Draw the point
+    ctx.fillStyle = healthChanges[i] === 'green' ? '#0f0' : '#f00';
     ctx.beginPath();
     ctx.arc(x, y, 3, 0, 2 * Math.PI);
     ctx.fill();
