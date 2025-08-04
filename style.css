@@ -85,3 +85,15 @@ canvas {
   flex: 1 1 50%;
   max-width: 100px;
 }
+
+/* New styles for the character image */
+#charImage {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#charImage img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 10px;
+}

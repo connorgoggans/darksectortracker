@@ -1,16 +1,40 @@
 let maxHealth = 12;
 let currentHealth = 12;
-let healthHistory = [currentHealth]; // to track health over time
-let healthChanges = ['start']; // track change direction (green or red)
+let healthHistory = [currentHealth]; // track health changes over time
+let healthChanges = ['start']; // track color changes (green/red)
+let selectedCharacter = ''; // for storing selected character name
+
+const characterImages = {
+  Abbot: "images/abbot.jpg",
+  Cook: "images/cook.jpg",
+  Miller: "images/miller.jpg",
+  Tailor: "images/tailor.jpg",
+  Smith: "images/smith.jpg",
+  Tanner: "images/tanner.jpg"
+};
 
 function startTracking() {
-  const nameInput = document.getElementById("charName").value.trim();
-  if (!nameInput) {
-    alert("Please enter a character name.");
-    return;
+  const charSelect = document.getElementById("charSelect").value;
+  const nameInput = document.getElementById("charNameInput").value.trim();
+
+  // Display the character image
+  document.getElementById("charDisplay").innerText = nameInput + "'s Health";
+
+  // Show the corresponding image
+  if (characterImages[charSelect]) {
+    document.getElementById("characterImage").src = characterImages[charSelect];
+    document.getElementById("charImage").classList.remove("hidden");
+  } else {
+    document.getElementById("charImage").classList.add("hidden");
   }
 
-  document.getElementById("charDisplay").innerText = nameInput + "'s Health";
+  // Hide the name input section if not using a custom name
+  if (charSelect === "Custom") {
+    document.getElementById("customNameSection").style.display = "block";
+  } else {
+    document.getElementById("customNameSection").style.display = "none";
+  }
+
   document.getElementById("character-setup").classList.add("hidden");
   document.getElementById("tracker").classList.remove("hidden");
 
@@ -40,7 +64,7 @@ function changeHealth(amount) {
   // Track the change direction (green for +, red for -)
   healthChanges.push(amount >= 0 ? 'green' : 'red');
   healthHistory.push(currentHealth);
-  
+
   renderHealth();
   drawChart();
 }
