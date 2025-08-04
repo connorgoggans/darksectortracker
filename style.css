@@ -61,3 +61,10 @@ button:hover {
 .health-box.filled {
   background-color: #0f0;
 }
+
+canvas {
+  background-color: #000;
+  border: 1px solid #555;
+  display: block;
+  margin: 20px auto;
+}
